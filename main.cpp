@@ -6,17 +6,34 @@ const char kWindowTitle[] = "LE2B_03_イトウカズイ_コマンド入力";
 
 // コマンドの定義
 Command hadouken = {
-	{Input::Down, Input::DownRight, Input::Right, Input::Punch}, // ↓↘→＋パンチ
-	10 // 各入力間の猶予フレームを10に拡大
+	{Input::Down, Input::DownRight, Input::Right, Input::Punch}, // ↓↘→＋P
+	10 // 猶予フレーム
 };
 Command shoryuken = {
-	{Input::Right, Input::Down, Input::DownRight, Input::Punch}, // →↓↘＋パンチ
-	10 // 各入力間の猶予フレームを10に拡大
+	{Input::Right, Input::Down, Input::DownRight, Input::Punch}, // →↓↘＋P
+	10 // 猶予フレーム
 };
 Command tatumakisenpukyaku = {
-	{Input::Down, Input::DownLeft, Input::Left, Input::Kick}, // ↓↙←＋キック
-	 10 // 各入力間の猶予フレームを10に拡大
+	{Input::Down, Input::DownLeft, Input::Left, Input::Kick}, // ↓↙←＋K
+	 10 // 猶予フレーム
 };
+Command spinDriveSmasher= {
+	{Input::Down, Input::DownRight, Input::Right, Input::Down, Input::DownRight, Input::Right, Input::Kick}, // ↓↘→↓↘→＋K
+	10 // 猶予フレーム
+};
+Command sinkuhadouken = {
+	{Input::Down, Input::DownRight, Input::Right, Input::Down, Input::DownRight, Input::Right, Input::Punch}, // ↓↘→↓↘→＋P
+	10 // 猶予フレーム
+};
+Command nage = {
+	{Input::Punch, Input::Kick}, // P+K
+	10 // 猶予フレーム
+};
+Command torigurahu = {
+	{Input::Down, Input::None, Input::Down, Input::Punch}, // ↓↓+K
+	10 // 猶予フレーム
+};
+
 
 CommandInput commandInput;
 
@@ -49,19 +66,39 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		// 入力状態を更新
 		commandInput.Update(keys, preKeys);
 
+		// スピンドライブスマッシャーコマンドの判定
+		if (commandInput.CheckCommand(spinDriveSmasher)) {
+			ULT = 4;
+			commandInput.ClearBuffer(); // 入力バッファをクリア
+		}
+		// 真空波動拳コマンドの判定
+		if (commandInput.CheckCommand(sinkuhadouken)) {
+			ULT = 5;
+			commandInput.ClearBuffer(); // 入力バッファをクリア
+		}
 		// 昇竜拳コマンドの判定
 		if (commandInput.CheckCommand(shoryuken)) {
 			ULT = 1;
 			commandInput.ClearBuffer(); // 入力バッファをクリア
 		}
 		// 波動拳コマンドの判定
-		else if (commandInput.CheckCommand(hadouken)) {
+		if (commandInput.CheckCommand(hadouken)) {
 			ULT = 2;
 			commandInput.ClearBuffer(); // 入力バッファをクリア
 		}
 		// 竜巻旋風脚コマンドの判定
-		else if (commandInput.CheckCommand(tatumakisenpukyaku)) {
+		if (commandInput.CheckCommand(tatumakisenpukyaku)) {
 			ULT = 3;
+			commandInput.ClearBuffer(); // 入力バッファをクリア
+		}
+		// トリグラフコマンドの判定
+		if (commandInput.CheckCommand(torigurahu)) {
+			ULT = 7;
+			commandInput.ClearBuffer(); // 入力バッファをクリア
+		}
+		// 投げコマンドの判定
+		if (commandInput.CheckCommand(nage)) {
+			ULT = 6;
 			commandInput.ClearBuffer(); // 入力バッファをクリア
 		}
 
@@ -85,6 +122,22 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		case 3:
 			Novice::ScreenPrintf(0, 0, "tatumakisenpukyaku!");
 			Novice::DrawBox(0, 0, kWindowWidth, kWindowHeight, 0.0f, 0x87a868FF, kFillModeSolid);
+			break;
+		case 4:
+			Novice::ScreenPrintf(0, 0, "spinDriveSmasher!");
+			Novice::DrawBox(0, 0, kWindowWidth, kWindowHeight, 0.0f, 0x68a88fFF, kFillModeSolid);
+			break;
+		case 5:
+			Novice::ScreenPrintf(0, 0, "sinkuhadouken!");
+			Novice::DrawBox(0, 0, kWindowWidth, kWindowHeight, 0.0f, 0x7cdb8bFF, kFillModeSolid);
+			break;
+		case 6:
+			Novice::ScreenPrintf(0, 0, "nage!");
+			Novice::DrawBox(0, 0, kWindowWidth, kWindowHeight, 0.0f, 0x78b164FF, kFillModeSolid);
+			break;
+		case 7:
+			Novice::ScreenPrintf(0, 0, "torigurahu!");
+			Novice::DrawBox(0, 0, kWindowWidth, kWindowHeight, 0.0f, 0x78b384FF, kFillModeSolid);
 			break;
 		}
 

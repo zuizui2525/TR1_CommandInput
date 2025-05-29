@@ -8,13 +8,13 @@ void CommandInput::Update(const char* keys, const char* preKeys) {
 
     // 現在の入力を取得
     Input currentInput = GetInput(keys, preKeys);
-    if (currentInput != Input::None) {
-        // 入力をバッファに追加
-        inputBuffer.push({ currentInput, currentFrame });
+    // 入力をバッファに追加
+    inputBuffer.push({ currentInput, currentFrame });
 
-        // 入力履歴を更新（最大履歴数を制限）
+    // 入力履歴を更新（最大履歴数を制限）
+    if (currentInput != Input::None) {
         inputHistory.push_back(currentInput);
-        if (inputHistory.size() > 10) { // 履歴は最大10件まで保持
+        if (inputHistory.size() > 20) { // 履歴は最大20件まで保持
             inputHistory.erase(inputHistory.begin());
         }
     }
