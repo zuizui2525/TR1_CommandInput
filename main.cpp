@@ -7,33 +7,40 @@ const char kWindowTitle[] = "LE2B_03_イトウカズイ_コマンド入力";
 // コマンドの定義
 Command hadouken = {
 	{Input::Down, Input::DownRight, Input::Right, Input::Punch}, // ↓↘→＋P
-	10 // 猶予フレーム
+	7 // 猶予フレーム
 };
 Command shoryuken = {
 	{Input::Right, Input::Down, Input::DownRight, Input::Punch}, // →↓↘＋P
-	10 // 猶予フレーム
+	7 // 猶予フレーム
 };
 Command tatumakisenpukyaku = {
 	{Input::Down, Input::DownLeft, Input::Left, Input::Kick}, // ↓↙←＋K
-	 10 // 猶予フレーム
+	7 // 猶予フレーム
 };
 Command spinDriveSmasher= {
 	{Input::Down, Input::DownRight, Input::Right, Input::Down, Input::DownRight, Input::Right, Input::Kick}, // ↓↘→↓↘→＋K
-	10 // 猶予フレーム
+	7 // 猶予フレーム
 };
 Command sinkuhadouken = {
 	{Input::Down, Input::DownRight, Input::Right, Input::Down, Input::DownRight, Input::Right, Input::Punch}, // ↓↘→↓↘→＋P
-	10 // 猶予フレーム
+	7 // 猶予フレーム
 };
 Command nage = {
 	{Input::Punch, Input::Kick}, // P+K
-	10 // 猶予フレーム
+	7 // 猶予フレーム
 };
 Command torigurahu = {
-	{Input::Down, Input::None, Input::Down, Input::Punch}, // ↓↓+K
-	10 // 猶予フレーム
+	{Input::Down, Input::Down, Input::Punch}, // ↓↓+P
+	7 // 猶予フレーム
 };
-
+Command ScrewPileDriver = {
+	{Input::Spin,Input::Punch}, // O+P
+	7 // 猶予フレーム
+};
+Command BolshoiStormBuster = {
+	{Input::Spin,Input::Spin,Input::Punch}, // OO+P
+	14 // 猶予フレーム
+};
 
 CommandInput commandInput;
 
@@ -66,6 +73,16 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		// 入力状態を更新
 		commandInput.Update(keys, preKeys);
 
+		// ボリショイストリームバスターコマンドの判定
+		if (commandInput.CheckCommand(BolshoiStormBuster)) {
+			ULT = 9;
+			commandInput.ClearBuffer(); // 入力バッファをクリア
+		}
+		// スクリューパイルドライバーコマンドの判定
+		if (commandInput.CheckCommand(ScrewPileDriver)) {
+			ULT = 8;
+			commandInput.ClearBuffer(); // 入力バッファをクリア
+		}
 		// スピンドライブスマッシャーコマンドの判定
 		if (commandInput.CheckCommand(spinDriveSmasher)) {
 			ULT = 4;
@@ -138,6 +155,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		case 7:
 			Novice::ScreenPrintf(0, 0, "torigurahu!");
 			Novice::DrawBox(0, 0, kWindowWidth, kWindowHeight, 0.0f, 0x78b384FF, kFillModeSolid);
+			break;
+		case 8:
+			Novice::ScreenPrintf(0, 0, "ScrewPileDriver!");
+			Novice::DrawBox(0, 0, kWindowWidth, kWindowHeight, 0.0f, 0x78b874FF, kFillModeSolid);
+			break;
+		case 9:
+			Novice::ScreenPrintf(0, 0, "BolshoiStormBuster!");
+			Novice::DrawBox(0, 0, kWindowWidth, kWindowHeight, 0.0f, 0x4bc88fFF, kFillModeSolid);
 			break;
 		}
 
