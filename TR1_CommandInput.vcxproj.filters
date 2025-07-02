@@ -116,5 +116,6 @@
     </ClInclude>
     <ClInclude Include="Struct.h" />
     <ClInclude Include="CommandInput.h" />
+    <ClInclude Include="Command.h" />
   </ItemGroup>
 </Project>

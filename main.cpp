@@ -7,11 +7,11 @@ const char kWindowTitle[] = "LE2B_03_イトウカズイ_コマンド入力";
 // コマンドの定義
 Command hadouken = {
 	{Input::Down, Input::DownRight, Input::Right, Input::Punch}, // ↓↘→＋P
-	7 // 猶予フレーム
+	7, // 猶予フレーム
 };
 Command shoryuken = {
 	{Input::Right, Input::Down, Input::DownRight, Input::Punch}, // →↓↘＋P
-	7 // 猶予フレーム
+	7, // 猶予フレーム
 };
 Command tatumakisenpukyaku = {
 	{Input::Down, Input::DownLeft, Input::Left, Input::Kick}, // ↓↙←＋K
@@ -31,7 +31,7 @@ Command nage = {
 };
 Command torigurahu = {
 	{Input::Down, Input::Down, Input::Punch}, // ↓↓+P
-	7 // 猶予フレーム
+	9 // 猶予フレーム
 };
 Command ScrewPileDriver = {
 	{Input::Spin,Input::Punch}, // O+P
@@ -40,6 +40,16 @@ Command ScrewPileDriver = {
 Command BolshoiStormBuster = {
 	{Input::Spin,Input::Spin,Input::Punch}, // OO+P
 	14 // 猶予フレーム
+};
+Command Somersault = {
+	{Input::Up, Input::Kick}, // C↓↑+K
+	7, // 猶予フレーム
+	{{Input::ChargeDown }}
+};
+Command SonicBoom = {
+	{Input::Right, Input::Punch}, // C←→+P
+	7, // 猶予フレーム
+	{{Input::ChargeLeft }}
 };
 
 CommandInput commandInput;
@@ -91,6 +101,16 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		// 真空波動拳コマンドの判定
 		if (commandInput.CheckCommand(sinkuhadouken)) {
 			ULT = 5;
+			commandInput.ClearBuffer(); // 入力バッファをクリア
+		}
+		// サマーソルトコマンドの判定
+		if (commandInput.CheckCommand(Somersault)) {
+			ULT = 10;
+			commandInput.ClearBuffer(); // 入力バッファをクリア
+		}
+		// ソニックブームコマンドの判定
+		if (commandInput.CheckCommand(SonicBoom)) {
+			ULT = 11;
 			commandInput.ClearBuffer(); // 入力バッファをクリア
 		}
 		// 昇竜拳コマンドの判定
@@ -163,6 +183,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		case 9:
 			Novice::ScreenPrintf(0, 0, "BolshoiStormBuster!");
 			Novice::DrawBox(0, 0, kWindowWidth, kWindowHeight, 0.0f, 0x4bc88fFF, kFillModeSolid);
+			break;
+		case 10:
+			Novice::ScreenPrintf(0, 0, "Somersault!");
+			Novice::DrawBox(0, 0, kWindowWidth, kWindowHeight, 0.0f, 0x6b168fFF, kFillModeSolid);
+			break;
+		case 11:
+			Novice::ScreenPrintf(0, 0, "SonicBoom!");
+			Novice::DrawBox(0, 0, kWindowWidth, kWindowHeight, 0.0f, 0x1b488fFF, kFillModeSolid);
 			break;
 		}
 

@@ -3,28 +3,8 @@
 #include <queue>
 #include <unordered_map>
 #include <string>
-
-// 入力の種類を定義（方向＋ボタン＋特殊）
-enum class Input {
-    None,
-    Down,
-    Right,
-    Left,
-    Up,
-    DownRight,
-    DownLeft,
-    UpRight,
-    UpLeft,
-    Punch,
-    Kick,
-    Spin  // 一回転入力を抽象化
-};
-
-// コマンド構造体（コマンドの入力列と許容フレーム）
-struct Command {
-    std::vector<Input> sequence; // 入力の並び（例：↓↓+P）
-    int maxFrameGap;             // 入力間の最大許容フレーム
-};
+#include <map>
+#include "Command.h"
 
 // コマンド入力検出クラス
 class CommandInput {
@@ -49,4 +29,17 @@ private:
     bool DetectSpin();                                          // 時計回り一回転を検出（旧）
     int DetectSpinCount();                                      // 回転の回数を検出（新）
     float GetAngle(Input dir);                                  // 方向を角度で表現
+    void RemoveOneSpinFromDirectionHistory();
+
+    std::map<Direction, ChargeState> chargeStates = {
+     { Direction::Down,  {} },
+     { Direction::Up,    {} },
+     { Direction::Left,  {} },
+     { Direction::Right, {} },
+    };
+
+    // 現在対象としている技のチャージ条件
+    float chargeThreshold = 0.75f;    // 溜めに必要な時間 45F = 0.75秒
+    float chargeKeepTime = 0.5f;     // 溜め入力の保存時間 30F = 0.5秒
+    void UpdateChargeStates(float now, Input rawDirection);
 };
