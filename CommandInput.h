@@ -8,6 +8,7 @@
 #include "InputManager.h"
 #include "InputBuffer.h"
 #include "SpinDetector.h"
+#include "ChargeManager.h"
 
 // コマンド入力検出クラス
 class CommandInput {
@@ -29,15 +30,5 @@ private:
     InputManager inputManager_;
     std::string InputToString(Input input) const;               // Input → 表示用文字列に変換
    
-    std::map<Direction, ChargeState> chargeStates = {
-     { Direction::Down,  {} },
-     { Direction::Up,    {} },
-     { Direction::Left,  {} },
-     { Direction::Right, {} },
-    };
-
-    // 現在対象としている技のチャージ条件
-    float chargeThreshold = 0.75f;    // 溜めに必要な時間 45F = 0.75秒
-    float chargeKeepTime = 0.5f;     // 溜め入力の保存時間 30F = 0.5秒
-    void UpdateChargeStates(float now, Input rawDirection);
+    ChargeManager chargeManager_;
 };

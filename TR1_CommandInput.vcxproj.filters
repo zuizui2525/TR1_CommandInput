@@ -42,6 +42,7 @@
     </ClCompile>
     <ClCompile Include="InputBuffer.cpp" />
     <ClCompile Include="SpinDetector.cpp" />
+    <ClCompile Include="ChargeManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\KamataEngine\DirectXGame\audio\Audio.h">
@@ -116,5 +117,6 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="InputBuffer.h" />
     <ClInclude Include="SpinDetector.h" />
+    <ClInclude Include="ChargeManager.h" />
   </ItemGroup>
 </Project>

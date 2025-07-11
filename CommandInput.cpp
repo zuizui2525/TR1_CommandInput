@@ -13,25 +13,13 @@ void CommandInput::Update(const char* keys, const char* preKeys) {
     currentFrame++;
 
     // 入力を取得して currentInput を定義
-    Input currentInput = inputManager_.GetInput(keys, preKeys);
+    Input rawInput = inputManager_.GetInput(keys, preKeys);
 
     // ★チャージ状態の更新と方向差し替え
-    UpdateChargeStates(currentFrame / 60.0f, currentInput);
+    chargeManager_.UpdateChargeState(currentFrame / 60.0f, rawInput);
 
     // currentInput が方向キーのときのみチャージ置き換えを検討
-    if (currentInput >= Input::Up && currentInput <= Input::DownLeft) {
-        for (const auto& [dir, state] : chargeStates) {
-            if (state.isValid) {
-                // 「成立中のチャージ方向」と「現在の入力方向」が一致しているときだけ置き換える
-                switch (dir) {
-                case Direction::Down:  if (currentInput == Input::Down)  currentInput = Input::ChargeDown;  break;
-                case Direction::Up:    if (currentInput == Input::Up)    currentInput = Input::ChargeUp;    break;
-                case Direction::Left:  if (currentInput == Input::Left)  currentInput = Input::ChargeLeft;  break;
-                case Direction::Right: if (currentInput == Input::Right) currentInput = Input::ChargeRight; break;
-                }
-            }
-        }
-    }
+    Input currentInput = chargeManager_.GetEffectiveInput(rawInput);
 
     // 方向キー履歴：Spin検出用（重複記録防止）
     spinDetector_.PushDirection(currentInput);
@@ -51,18 +39,7 @@ void CommandInput::Update(const char* keys, const char* preKeys) {
 
         // チャージが成立していたが、方向キーが離された瞬間に通常Inputになってしまうのを防ぐ
         // → チャージ成立中の方向キー入力を保持して強制的にInput::ChargeDownなどで記録
-        Input bufferedInput = currentInput;
-
-        for (const auto& [dir, state] : chargeStates) {
-            if (state.isValid) {
-                switch (dir) {
-                case Direction::Down:  if (currentInput == Input::Down)  bufferedInput = Input::ChargeDown;  break;
-                case Direction::Up:    if (currentInput == Input::Up)    bufferedInput = Input::ChargeUp;    break;
-                case Direction::Left:  if (currentInput == Input::Left)  bufferedInput = Input::ChargeLeft;  break;
-                case Direction::Right: if (currentInput == Input::Right) bufferedInput = Input::ChargeRight; break;
-                }
-            }
-        }
+        Input bufferedInput = chargeManager_.GetEffectiveInput(currentInput);
 
         inputBuffer_.PushInput(bufferedInput, currentFrame);
     }
@@ -87,8 +64,7 @@ bool CommandInput::CheckCommand(const Command& command) {
         default: return false;
         }
 
-        const auto& state = chargeStates.at(dir);
-        if (!state.isValid) return false;
+        if (!chargeManager_.IsChargeValid(cond.input)) return false;
     }
 
     // ② 通常の入力シーケンスのチェック（Up→Kickなど）
@@ -124,51 +100,8 @@ bool CommandInput::CheckCommand(const Command& command) {
 void CommandInput::ClearBuffer() {
     inputBuffer_.Clear();
     spinDetector_.Clear();
+    chargeManager_.Clear();
     lastInput = Input::None;
-}
-
-void CommandInput::UpdateChargeStates(float now, Input rawDirection) {
-    auto getDirection = [](Input input) -> std::optional<Direction> {
-        switch (input) {
-        case Input::Down:       return Direction::Down;
-        case Input::Up:         return Direction::Up;
-        case Input::Left:       return Direction::Left;
-        case Input::Right:      return Direction::Right;
-        case Input::ChargeDown: return Direction::Down;
-        case Input::ChargeUp:   return Direction::Up;
-        case Input::ChargeLeft: return Direction::Left;
-        case Input::ChargeRight:return Direction::Right;
-        default: return std::nullopt;
-        }
-    };
-
-    for (auto& [dir, state] : chargeStates) {
-        bool isHeld = getDirection(rawDirection) == dir;
-
-        if (isHeld) {
-            if (!state.isCharging) {
-                state.isCharging = true;
-                state.startTime = now;
-            }
-
-            float chargeTime = now - state.startTime;
-            if (!state.isValid && chargeTime >= chargeThreshold) {
-                state.isValid = true;
-                state.validTime = now;
-            }
-        } else {
-            if (state.isCharging) {
-                state.isCharging = false;
-                if (state.isValid) {
-                    state.validTime = now;
-                }
-            }
-
-            if (state.isValid && now - state.validTime > chargeKeepTime) {
-                state.isValid = false;
-            }
-        }
-    }
 }
 
 // 入力 → 文字列
