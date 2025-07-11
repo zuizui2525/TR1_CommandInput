@@ -13,7 +13,7 @@ void CommandInput::Update(const char* keys, const char* preKeys) {
     currentFrame++;
 
     // 入力を取得して currentInput を定義
-    Input currentInput = GetInput(keys, preKeys);
+    Input currentInput = inputManager_.GetInput(keys, preKeys);
 
     // ★チャージ状態の更新と方向差し替え
     UpdateChargeStates(currentFrame / 60.0f, currentInput);
@@ -154,28 +154,6 @@ void CommandInput::ClearBuffer() {
     inputHistory.clear();
     directionHistory.clear();
     lastInput = Input::None;
-}
-
-// キー入力から方向・ボタン入力を判定
-Input CommandInput::GetInput(const char* keys, const char* preKeys) {
-    if (keys[DIK_U] && !preKeys[DIK_U]) return Input::Punch;
-    if (keys[DIK_J] && !preKeys[DIK_J]) return Input::Kick;
-
-    bool up = keys[DIK_SPACE] || keys[DIK_W];
-    bool down = keys[DIK_S];
-    bool left = keys[DIK_A];
-    bool right = keys[DIK_D];
-
-    if (up && right) return Input::UpRight;
-    if (up && left) return Input::UpLeft;
-    if (down && right) return Input::DownRight;
-    if (down && left) return Input::DownLeft;
-    if (up) return Input::Up;
-    if (down) return Input::Down;
-    if (left) return Input::Left;
-    if (right) return Input::Right;
-
-    return Input::None;
 }
 
 // Inputを角度に変換（Spin検出用）

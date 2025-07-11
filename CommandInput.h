@@ -5,6 +5,7 @@
 #include <string>
 #include <map>
 #include "Command.h"
+#include "InputManager.h"
 
 // コマンド入力検出クラス
 class CommandInput {
@@ -24,7 +25,7 @@ private:
     int lastSpinFrame;                                          // 最後に回転を検出したフレーム
     Input lastInput;                                            // 前フレームの入力
 
-    Input GetInput(const char* keys, const char* preKeys);      // 現在のキー状態からInputを取得
+    InputManager inputManager_;
     std::string InputToString(Input input) const;               // Input → 表示用文字列に変換
     bool DetectSpin();                                          // 時計回り一回転を検出（旧）
     int DetectSpinCount();                                      // 回転の回数を検出（新）
