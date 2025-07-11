@@ -1,8 +1,9 @@
 #include <Novice.h>
-#include "Struct.h"
 #include "CommandInput.h"
 
 const char kWindowTitle[] = "LE2B_03_イトウカズイ_コマンド入力";
+const int kWindowWidth = 1280;
+const int kWindowHeight = 720;
 
 // コマンドの定義
 Command hadouken = {
@@ -51,6 +52,11 @@ Command SonicBoom = {
 	7, // 猶予フレーム
 	{{Input::ChargeLeft }}
 };
+Command BakaWaza = {
+	{Input::Punch, Input::Down, Input::DownRight, Input::Right, Input::Down, Input::DownRight, Input::Right, Input::Punch},
+	7, // 猶予フレーム
+	{{Input::ChargeUp }}
+};
 
 CommandInput commandInput;
 
@@ -83,6 +89,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		// 入力状態を更新
 		commandInput.Update(keys, preKeys);
 
+		// バカ技コマンドの判定
+		if (commandInput.CheckCommand(BakaWaza)) {
+			ULT = 12;
+			commandInput.ClearBuffer(); // 入力バッファをクリア
+		}
 		// ボリショイストリームバスターコマンドの判定
 		if (commandInput.CheckCommand(BolshoiStormBuster)) {
 			ULT = 9;
@@ -191,6 +202,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		case 11:
 			Novice::ScreenPrintf(0, 0, "SonicBoom!");
 			Novice::DrawBox(0, 0, kWindowWidth, kWindowHeight, 0.0f, 0x1b488fFF, kFillModeSolid);
+			break;
+		case 12:
+			Novice::ScreenPrintf(0, 0, "BakaWaza!");
+			Novice::DrawBox(0, 0, kWindowWidth, kWindowHeight, 0.0f, 0x3a789fFF, kFillModeSolid);
 			break;
 		}
 
