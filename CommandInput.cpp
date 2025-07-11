@@ -6,7 +6,7 @@
 #include <optional>
 
 CommandInput::CommandInput()
-    : currentFrame(0), lastSpinFrame(-9999), lastInput(Input::None) {
+    : currentFrame(0), lastInput(Input::None) {
 }
 
 void CommandInput::Update(const char* keys, const char* preKeys) {
@@ -34,25 +34,16 @@ void CommandInput::Update(const char* keys, const char* preKeys) {
     }
 
     // 方向キー履歴：Spin検出用（重複記録防止）
-    if (currentInput <= Input::DownLeft && currentInput != Input::None) {
-        if (directionHistory.empty() || directionHistory.back() != currentInput) {
-            directionHistory.push_back(currentInput);
-            if (directionHistory.size() > 40) {
-                directionHistory.erase(directionHistory.begin());
-            }
-        }
-    }
+    spinDetector_.PushDirection(currentInput);
 
     // Spin入力検出（3F以上空けて再検出）
-    if (currentFrame - lastSpinFrame > 3) {
-        int spinCount = DetectSpinCount();
+    if (currentFrame - lastSpinFrame_ > 3) {
+        int spinCount = spinDetector_.DetectSpinCount();
         if (spinCount > 0) {
-            for (int i = 0; i < spinCount; ++i) {
-                inputBuffer_.PushInput(Input::Spin, currentFrame);
-                RemoveOneSpinFromDirectionHistory(); // 検出後はリセット
-            }
-            lastSpinFrame = currentFrame;
+            inputBuffer_.PushInput(Input::Spin, currentFrame);
+            spinDetector_.RemoveOneSpin();
         }
+        lastSpinFrame_ = currentFrame;
     }
 
     // 入力バッファ：None以外＆前回と違うときだけ記録（長押し無効化）
@@ -132,105 +123,8 @@ bool CommandInput::CheckCommand(const Command& command) {
 // バッファクリア（再スタート時など）
 void CommandInput::ClearBuffer() {
     inputBuffer_.Clear();
+    spinDetector_.Clear();
     lastInput = Input::None;
-}
-
-// Inputを角度に変換（Spin検出用）
-float CommandInput::GetAngle(Input dir) {
-    switch (dir) {
-    case Input::Right: return 0.0f;
-    case Input::UpRight: return 45.0f;
-    case Input::Up: return 90.0f;
-    case Input::UpLeft: return 135.0f;
-    case Input::Left: return 180.0f;
-    case Input::DownLeft: return 225.0f;
-    case Input::Down: return 270.0f;
-    case Input::DownRight: return 315.0f;
-    default: return -1.0f;
-    }
-}
-
-// 時計回り1回転を簡易的に検出（未使用）
-bool CommandInput::DetectSpin() {
-    return false;
-}
-
-// 回転の角度から回転回数を判定
-int CommandInput::DetectSpinCount() {
-    if (directionHistory.size() < 5) return 0;
-
-    float totalAngle = 0.0f;
-    std::set<Input> passedDirs;
-
-    for (size_t i = 1; i < directionHistory.size(); ++i) {
-        float a1 = GetAngle(directionHistory[i - 1]);
-        float a2 = GetAngle(directionHistory[i]);
-        if (a1 < 0 || a2 < 0) continue;
-
-        float delta = a2 - a1;
-        if (delta > 180.0f) delta -= 360.0f;
-        if (delta < -180.0f) delta += 360.0f;
-        totalAngle += delta;
-
-        passedDirs.insert(directionHistory[i]);
-    }
-
-    auto contains = [&](std::initializer_list<Input> group) {
-        for (Input dir : group) {
-            if (passedDirs.count(dir)) return true;
-        }
-        return false;
-        };
-
-    bool hasUp = contains({ Input::Up, Input::UpRight, Input::UpLeft });
-    bool hasDown = contains({ Input::Down, Input::DownRight, Input::DownLeft });
-    bool hasRight = contains({ Input::Right, Input::UpRight, Input::DownRight });
-    bool hasLeft = contains({ Input::Left, Input::UpLeft, Input::DownLeft });
-
-    int spinCount = static_cast<int>(std::abs(totalAngle) / 330.0f);
-
-    int dirCount = 0;
-    if (hasUp) dirCount++;
-    if (hasDown) dirCount++;
-    if (hasRight) dirCount++;
-    if (hasLeft) dirCount++;
-
-    if (spinCount >= 1 && dirCount >= 4) {
-        return spinCount;
-    }
-
-    return 0;
-}
-
-void CommandInput::RemoveOneSpinFromDirectionHistory() {
-    if (directionHistory.size() < 5) return;
-
-    float totalAngle = 0.0f;
-    size_t removeCount = 0;
-
-    for (size_t i = 1; i < directionHistory.size(); ++i) {
-        float a1 = GetAngle(directionHistory[i - 1]);
-        float a2 = GetAngle(directionHistory[i]);
-        if (a1 < 0 || a2 < 0) continue;
-
-        float delta = a2 - a1;
-        if (delta > 180.0f) delta -= 360.0f;
-        if (delta < -180.0f) delta += 360.0f;
-
-        totalAngle += delta;
-        removeCount++;
-
-        if (std::abs(totalAngle) >= 330.0f) {
-            break;
-        }
-    }
-
-    // removeCount + 1 は、開始点も含めて削除
-    if (removeCount + 1 < directionHistory.size()) {
-        directionHistory.erase(directionHistory.begin(), directionHistory.begin() + removeCount + 1);
-    } else {
-        directionHistory.clear();
-    }
 }
 
 void CommandInput::UpdateChargeStates(float now, Input rawDirection) {

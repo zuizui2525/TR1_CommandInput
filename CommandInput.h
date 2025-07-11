@@ -7,6 +7,7 @@
 #include "Command.h"
 #include "InputManager.h"
 #include "InputBuffer.h"
+#include "SpinDetector.h"
 
 // コマンド入力検出クラス
 class CommandInput {
@@ -20,18 +21,14 @@ public:
 
 private:
     InputBuffer inputBuffer_;
-    std::vector<Input> directionHistory;                        // 回転検出用の方向履歴
+    SpinDetector spinDetector_;
+    int lastSpinFrame_ = -9999;
     int currentFrame;                                           // 現在のフレーム
-    int lastSpinFrame;                                          // 最後に回転を検出したフレーム
     Input lastInput;                                            // 前フレームの入力
 
     InputManager inputManager_;
     std::string InputToString(Input input) const;               // Input → 表示用文字列に変換
-    bool DetectSpin();                                          // 時計回り一回転を検出（旧）
-    int DetectSpinCount();                                      // 回転の回数を検出（新）
-    float GetAngle(Input dir);                                  // 方向を角度で表現
-    void RemoveOneSpinFromDirectionHistory();
-
+   
     std::map<Direction, ChargeState> chargeStates = {
      { Direction::Down,  {} },
      { Direction::Up,    {} },

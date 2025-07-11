@@ -41,6 +41,7 @@
       <Filter>KamataEngine\Source</Filter>
     </ClCompile>
     <ClCompile Include="InputBuffer.cpp" />
+    <ClCompile Include="SpinDetector.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\KamataEngine\DirectXGame\audio\Audio.h">
@@ -114,5 +115,6 @@
     <ClInclude Include="Command.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="InputBuffer.h" />
+    <ClInclude Include="SpinDetector.h" />
   </ItemGroup>
 </Project>

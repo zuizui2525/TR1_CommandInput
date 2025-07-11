@@ -34,13 +34,13 @@ Command torigurahu = {
 	{Input::Down, Input::Down, Input::Punch}, // ↓↓+P
 	9 // 猶予フレーム
 };
-Command ScrewPileDriver = {
-	{Input::Spin,Input::Punch}, // O+P
-	7 // 猶予フレーム
-};
 Command BolshoiStormBuster = {
 	{Input::Spin,Input::Spin,Input::Punch}, // OO+P
 	14 // 猶予フレーム
+};
+Command ScrewPileDriver = {
+	{Input::Spin,Input::Punch}, // O+P
+	7 // 猶予フレーム
 };
 Command Somersault = {
 	{Input::Up, Input::Kick}, // C↓↑+K
@@ -96,12 +96,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		}
 		// ボリショイストリームバスターコマンドの判定
 		if (commandInput.CheckCommand(BolshoiStormBuster)) {
-			ULT = 9;
+			ULT = 8;
 			commandInput.ClearBuffer(); // 入力バッファをクリア
 		}
 		// スクリューパイルドライバーコマンドの判定
 		if (commandInput.CheckCommand(ScrewPileDriver)) {
-			ULT = 8;
+			ULT = 9;
 			commandInput.ClearBuffer(); // 入力バッファをクリア
 		}
 		// スピンドライブスマッシャーコマンドの判定
@@ -188,12 +188,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			Novice::DrawBox(0, 0, kWindowWidth, kWindowHeight, 0.0f, 0x78b384FF, kFillModeSolid);
 			break;
 		case 8:
-			Novice::ScreenPrintf(0, 0, "ScrewPileDriver!");
-			Novice::DrawBox(0, 0, kWindowWidth, kWindowHeight, 0.0f, 0x78b874FF, kFillModeSolid);
-			break;
-		case 9:
 			Novice::ScreenPrintf(0, 0, "BolshoiStormBuster!");
 			Novice::DrawBox(0, 0, kWindowWidth, kWindowHeight, 0.0f, 0x4bc88fFF, kFillModeSolid);
+			break;
+		case 9:
+			Novice::ScreenPrintf(0, 0, "ScrewPileDriver!");
+			Novice::DrawBox(0, 0, kWindowWidth, kWindowHeight, 0.0f, 0x78b874FF, kFillModeSolid);
 			break;
 		case 10:
 			Novice::ScreenPrintf(0, 0, "Somersault!");
