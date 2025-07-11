@@ -9,6 +9,7 @@
 #include "InputBuffer.h"
 #include "SpinDetector.h"
 #include "ChargeManager.h"
+#include "CommandChecker.h"
 
 // コマンド入力検出クラス
 class CommandInput {
@@ -16,7 +17,6 @@ public:
     CommandInput();
 
     void Update(const char* keys, const char* preKeys);         // 毎フレームの入力処理
-    bool CheckCommand(const Command& command);                  // 特定のコマンドが入力されたかチェック
     void ClearBuffer();                                         // バッファ初期化
     std::string GetInputHistory() const;                        // 入力履歴の文字列を取得
 
@@ -31,4 +31,5 @@ private:
     std::string InputToString(Input input) const;               // Input → 表示用文字列に変換
    
     ChargeManager chargeManager_;
+    CommandChecker commandChecker_;
 };

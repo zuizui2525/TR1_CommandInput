@@ -59,6 +59,7 @@ Command BakaWaza = {
 };
 
 CommandInput commandInput;
+CommandChecker commandChecker;
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
@@ -90,62 +91,62 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		commandInput.Update(keys, preKeys);
 
 		// バカ技コマンドの判定
-		if (commandInput.CheckCommand(BakaWaza)) {
+		if (commandChecker.CheckCommand(BakaWaza)) {
 			ULT = 12;
 			commandInput.ClearBuffer(); // 入力バッファをクリア
 		}
 		// ボリショイストリームバスターコマンドの判定
-		if (commandInput.CheckCommand(BolshoiStormBuster)) {
+		if (commandChecker.CheckCommand(BolshoiStormBuster)) {
 			ULT = 8;
 			commandInput.ClearBuffer(); // 入力バッファをクリア
 		}
 		// スクリューパイルドライバーコマンドの判定
-		if (commandInput.CheckCommand(ScrewPileDriver)) {
+		if (commandChecker.CheckCommand(ScrewPileDriver)) {
 			ULT = 9;
 			commandInput.ClearBuffer(); // 入力バッファをクリア
 		}
 		// スピンドライブスマッシャーコマンドの判定
-		if (commandInput.CheckCommand(spinDriveSmasher)) {
+		if (commandChecker.CheckCommand(spinDriveSmasher)) {
 			ULT = 4;
 			commandInput.ClearBuffer(); // 入力バッファをクリア
 		}
 		// 真空波動拳コマンドの判定
-		if (commandInput.CheckCommand(sinkuhadouken)) {
+		if (commandChecker.CheckCommand(sinkuhadouken)) {
 			ULT = 5;
 			commandInput.ClearBuffer(); // 入力バッファをクリア
 		}
 		// サマーソルトコマンドの判定
-		if (commandInput.CheckCommand(Somersault)) {
+		if (commandChecker.CheckCommand(Somersault)) {
 			ULT = 10;
 			commandInput.ClearBuffer(); // 入力バッファをクリア
 		}
 		// ソニックブームコマンドの判定
-		if (commandInput.CheckCommand(SonicBoom)) {
+		if (commandChecker.CheckCommand(SonicBoom)) {
 			ULT = 11;
 			commandInput.ClearBuffer(); // 入力バッファをクリア
 		}
 		// 昇竜拳コマンドの判定
-		if (commandInput.CheckCommand(shoryuken)) {
+		if (commandChecker.CheckCommand(shoryuken)) {
 			ULT = 1;
 			commandInput.ClearBuffer(); // 入力バッファをクリア
 		}
 		// 波動拳コマンドの判定
-		if (commandInput.CheckCommand(hadouken)) {
+		if (commandChecker.CheckCommand(hadouken)) {
 			ULT = 2;
 			commandInput.ClearBuffer(); // 入力バッファをクリア
 		}
 		// 竜巻旋風脚コマンドの判定
-		if (commandInput.CheckCommand(tatumakisenpukyaku)) {
+		if (commandChecker.CheckCommand(tatumakisenpukyaku)) {
 			ULT = 3;
 			commandInput.ClearBuffer(); // 入力バッファをクリア
 		}
 		// トリグラフコマンドの判定
-		if (commandInput.CheckCommand(torigurahu)) {
+		if (commandChecker.CheckCommand(torigurahu)) {
 			ULT = 7;
 			commandInput.ClearBuffer(); // 入力バッファをクリア
 		}
 		// 投げコマンドの判定
-		if (commandInput.CheckCommand(nage)) {
+		if (commandChecker.CheckCommand(nage)) {
 			ULT = 6;
 			commandInput.ClearBuffer(); // 入力バッファをクリア
 		}

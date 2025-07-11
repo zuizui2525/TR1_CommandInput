@@ -6,7 +6,9 @@
 #include <optional>
 
 CommandInput::CommandInput()
-    : currentFrame(0), lastInput(Input::None) {
+    : currentFrame(0),
+      lastInput(Input::None),
+      commandChecker_(inputBuffer_, chargeManager_) {
 }
 
 void CommandInput::Update(const char* keys, const char* preKeys) {
@@ -49,51 +51,6 @@ void CommandInput::Update(const char* keys, const char* preKeys) {
 
     // 次フレーム用に保持
     lastInput = currentInput;
-}
-
-// 特定のコマンドが入力されているかをチェック
-bool CommandInput::CheckCommand(const Command& command) {
-    // ① まずチャージ条件を満たしているか確認
-    for (const auto& cond : command.chargeConditions) {
-        Direction dir;
-        switch (cond.input) {
-        case Input::ChargeDown: dir = Direction::Down; break;
-        case Input::ChargeUp: dir = Direction::Up; break;
-        case Input::ChargeLeft: dir = Direction::Left; break;
-        case Input::ChargeRight: dir = Direction::Right; break;
-        default: return false;
-        }
-
-        if (!chargeManager_.IsChargeValid(cond.input)) return false;
-    }
-
-    // ② 通常の入力シーケンスのチェック（Up→Kickなど）
-    const std::vector<Input>& sequence = command.sequence;
-    int maxFrameGap = command.maxFrameGap;
-
-    std::queue<std::pair<Input, int>> tempQueue = inputBuffer_.GetBufferCopy();
-    std::vector<std::pair<Input, int>> inputs;
-    while (!tempQueue.empty()) {
-        inputs.push_back(tempQueue.front());
-        tempQueue.pop();
-    }
-
-    size_t seqIndex = 0;
-    int lastMatchedFrame = -1;
-
-    for (const auto& [input, frame] : inputs) {
-        if (seqIndex >= sequence.size()) break;
-
-        if (input == sequence[seqIndex]) {
-            if (lastMatchedFrame != -1 && frame - lastMatchedFrame > maxFrameGap) {
-                return false;
-            }
-            lastMatchedFrame = frame;
-            seqIndex++;
-        }
-    }
-
-    return (seqIndex == sequence.size());
 }
 
 // バッファクリア（再スタート時など）
