@@ -40,6 +40,7 @@
     <ClCompile Include="C:\KamataEngine\DirectXGame\2d\ImGuiManager.cpp">
       <Filter>KamataEngine\Source</Filter>
     </ClCompile>
+    <ClCompile Include="InputBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\KamataEngine\DirectXGame\audio\Audio.h">
@@ -112,5 +113,6 @@
     <ClInclude Include="CommandInput.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="InputBuffer.h" />
   </ItemGroup>
 </Project>

@@ -33,15 +33,6 @@ void CommandInput::Update(const char* keys, const char* preKeys) {
         }
     }
 
-
-    // 表示用履歴：前回と異なる入力のみ記録（Noneも1つだけ記録する）
-    if (inputHistory.empty() || inputHistory.back() != currentInput) {
-        inputHistory.push_back(currentInput);
-        if (inputHistory.size() > 20) {
-            inputHistory.erase(inputHistory.begin());
-        }
-    }
-
     // 方向キー履歴：Spin検出用（重複記録防止）
     if (currentInput <= Input::DownLeft && currentInput != Input::None) {
         if (directionHistory.empty() || directionHistory.back() != currentInput) {
@@ -57,15 +48,7 @@ void CommandInput::Update(const char* keys, const char* preKeys) {
         int spinCount = DetectSpinCount();
         if (spinCount > 0) {
             for (int i = 0; i < spinCount; ++i) {
-                inputBuffer.push({ Input::Spin, currentFrame });
-
-                // 履歴にも追加（表示用）
-                if (inputHistory.empty() || inputHistory.back() != Input::Spin) {
-                    inputHistory.push_back(Input::Spin);
-                    if (inputHistory.size() > 20) {
-                        inputHistory.erase(inputHistory.begin());
-                    }
-                }
+                inputBuffer_.PushInput(Input::Spin, currentFrame);
                 RemoveOneSpinFromDirectionHistory(); // 検出後はリセット
             }
             lastSpinFrame = currentFrame;
@@ -90,13 +73,11 @@ void CommandInput::Update(const char* keys, const char* preKeys) {
             }
         }
 
-        inputBuffer.push({ bufferedInput, currentFrame });
+        inputBuffer_.PushInput(bufferedInput, currentFrame);
     }
 
     // バッファが古くなったら削除（最大60F保持）
-    while (!inputBuffer.empty() && currentFrame - inputBuffer.front().second > 60) {
-        inputBuffer.pop();
-    }
+    inputBuffer_.Update(currentFrame);
 
     // 次フレーム用に保持
     lastInput = currentInput;
@@ -123,7 +104,7 @@ bool CommandInput::CheckCommand(const Command& command) {
     const std::vector<Input>& sequence = command.sequence;
     int maxFrameGap = command.maxFrameGap;
 
-    std::queue<std::pair<Input, int>> tempQueue = inputBuffer;
+    std::queue<std::pair<Input, int>> tempQueue = inputBuffer_.GetBufferCopy();
     std::vector<std::pair<Input, int>> inputs;
     while (!tempQueue.empty()) {
         inputs.push_back(tempQueue.front());
@@ -150,9 +131,7 @@ bool CommandInput::CheckCommand(const Command& command) {
 
 // バッファクリア（再スタート時など）
 void CommandInput::ClearBuffer() {
-    while (!inputBuffer.empty()) inputBuffer.pop();
-    inputHistory.clear();
-    directionHistory.clear();
+    inputBuffer_.Clear();
     lastInput = Input::None;
 }
 
@@ -323,9 +302,5 @@ std::string CommandInput::InputToString(Input input) const {
 
 // 表示用履歴を文字列に変換
 std::string CommandInput::GetInputHistory() const {
-    std::string history;
-    for (const auto& input : inputHistory) {
-        history += InputToString(input) + " ";
-    }
-    return history;
+    return inputBuffer_.GetInputHistory();
 }

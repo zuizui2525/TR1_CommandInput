@@ -6,6 +6,7 @@
 #include <map>
 #include "Command.h"
 #include "InputManager.h"
+#include "InputBuffer.h"
 
 // コマンド入力検出クラス
 class CommandInput {
@@ -18,8 +19,7 @@ public:
     std::string GetInputHistory() const;                        // 入力履歴の文字列を取得
 
 private:
-    std::queue<std::pair<Input, int>> inputBuffer;              // 入力バッファ（Input, Frame）
-    std::vector<Input> inputHistory;                            // 表示用履歴（20個まで）
+    InputBuffer inputBuffer_;
     std::vector<Input> directionHistory;                        // 回転検出用の方向履歴
     int currentFrame;                                           // 現在のフレーム
     int lastSpinFrame;                                          // 最後に回転を検出したフレーム
