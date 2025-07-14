@@ -14,6 +14,9 @@
     <Filter Include="KamataEngine\Adapter">
       <UniqueIdentifier>{c6468eb4-788b-4a83-b207-a5f4804e56c5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Command">
+      <UniqueIdentifier>{be85cee6-00e7-4852-ac72-8db3abbf4cc4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="C:\KamataEngine\DirectXGame\base\DirectXCommon.cpp">
@@ -35,16 +38,30 @@
     <ClCompile Include="C:\KamataEngine\DirectXGame\base\StringUtility.cpp">
       <Filter>KamataEngine\Source</Filter>
     </ClCompile>
-    <ClCompile Include="CommandInput.cpp" />
-    <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="C:\KamataEngine\DirectXGame\2d\ImGuiManager.cpp">
       <Filter>KamataEngine\Source</Filter>
     </ClCompile>
-    <ClCompile Include="InputBuffer.cpp" />
-    <ClCompile Include="SpinDetector.cpp" />
-    <ClCompile Include="ChargeManager.cpp" />
-    <ClCompile Include="CommandChecker.cpp" />
-    <ClCompile Include="CommandList.cpp" />
+    <ClCompile Include="Command\ChargeManager.cpp">
+      <Filter>Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Command\CommandChecker.cpp">
+      <Filter>Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Command\CommandList.cpp">
+      <Filter>Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Command\CommandManager.cpp">
+      <Filter>Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Command\InputBuffer.cpp">
+      <Filter>Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Command\InputManager.cpp">
+      <Filter>Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Command\SpinDetector.cpp">
+      <Filter>Command</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\KamataEngine\DirectXGame\audio\Audio.h">
@@ -110,17 +127,35 @@
     <ClInclude Include="C:\KamataEngine\DirectXGame\3d\SpotLight.h">
       <Filter>KamataEngine\Include</Filter>
     </ClInclude>
-    <ClInclude Include="C:\KamataEngine\DirectXGame\2d\ImGuiManager.h" />
     <ClInclude Include="C:\KamataEngine\DirectXGame\base\StringUtility.h">
       <Filter>KamataEngine\Include</Filter>
     </ClInclude>
-    <ClInclude Include="CommandInput.h" />
-    <ClInclude Include="Command.h" />
-    <ClInclude Include="InputManager.h" />
-    <ClInclude Include="InputBuffer.h" />
-    <ClInclude Include="SpinDetector.h" />
-    <ClInclude Include="ChargeManager.h" />
-    <ClInclude Include="CommandChecker.h" />
-    <ClInclude Include="CommandList.h" />
+    <ClInclude Include="Command\ChargeManager.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\CommandManager.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\Command.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\CommandChecker.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\CommandList.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\InputBuffer.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\InputManager.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\SpinDetector.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\KamataEngine\DirectXGame\2d\ImGuiManager.h">
+      <Filter>KamataEngine\Include</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
