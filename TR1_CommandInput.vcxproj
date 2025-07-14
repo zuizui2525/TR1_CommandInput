@@ -115,14 +115,14 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClCompile Include="C:\KamataEngine\DirectXGame\base\TextureManager.cpp" />
     <ClCompile Include="C:\KamataEngine\DirectXGame\2d\ImGuiManager.cpp" />
     <ClCompile Include="C:\KamataEngine\Adapter\Novice.cpp" />
-    <ClCompile Include="ChargeManager.cpp" />
-    <ClCompile Include="CommandChecker.cpp" />
-    <ClCompile Include="CommandInput.cpp" />
-    <ClCompile Include="CommandList.cpp" />
-    <ClCompile Include="InputBuffer.cpp" />
-    <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="Command\ChargeManager.cpp" />
+    <ClCompile Include="Command\CommandChecker.cpp" />
+    <ClCompile Include="Command\CommandInput.cpp" />
+    <ClCompile Include="Command\CommandList.cpp" />
+    <ClCompile Include="Command\InputBuffer.cpp" />
+    <ClCompile Include="Command\InputManager.cpp" />
+    <ClCompile Include="Command\SpinDetector.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="SpinDetector.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\KamataEngine\DirectXGame\base\StringUtility.h" />
@@ -148,14 +148,14 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClInclude Include="C:\KamataEngine\DirectXGame\input\Input.h" />
     <ClInclude Include="C:\KamataEngine\DirectXGame\scene\GameScene.h" />
     <ClInclude Include="C:\KamataEngine\Adapter\Novice.h" />
-    <ClInclude Include="ChargeManager.h" />
-    <ClInclude Include="Command.h" />
-    <ClInclude Include="CommandChecker.h" />
-    <ClInclude Include="CommandInput.h" />
-    <ClInclude Include="CommandList.h" />
-    <ClInclude Include="InputBuffer.h" />
-    <ClInclude Include="InputManager.h" />
-    <ClInclude Include="SpinDetector.h" />
+    <ClInclude Include="Command\ChargeManager.h" />
+    <ClInclude Include="Command\Command.h" />
+    <ClInclude Include="Command\CommandChecker.h" />
+    <ClInclude Include="Command\CommandInput.h" />
+    <ClInclude Include="Command\CommandList.h" />
+    <ClInclude Include="Command\InputBuffer.h" />
+    <ClInclude Include="Command\InputManager.h" />
+    <ClInclude Include="Command\SpinDetector.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

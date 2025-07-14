@@ -1,6 +1,6 @@
 #include <Novice.h>
-#include "CommandInput.h"
-#include "CommandList.h"
+#include "Command/CommandInput.h"
+#include "Command/CommandList.h"
 
 const char kWindowTitle[] = "LE2B_03_イトウカズイ_コマンド入力";
 const int kWindowWidth = 1280;
