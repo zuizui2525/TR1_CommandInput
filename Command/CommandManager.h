@@ -12,10 +12,10 @@
 #include "CommandChecker.h"  
 
 // コマンド入力検出クラス  
-class CommandInput {  
+class CommandManager {  
 public:  
-    CommandInput();  
-    ~CommandInput();  
+    CommandManager();  
+    ~CommandManager();  
 
     void Update(const char* keys, const char* preKeys);         // 毎フレームの入力処理  
     void ClearBuffer();                                         // バッファ初期化  

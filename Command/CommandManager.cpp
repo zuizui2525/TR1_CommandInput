@@ -1,20 +1,20 @@
-﻿#include "CommandInput.h"
+﻿#include "CommandManager.h"
 #include <Novice.h>
 #include <cmath>
 #include <set>
 #include <algorithm> // std::unique
 #include <optional>
 
-CommandInput::CommandInput()
+CommandManager::CommandManager()
     : currentFrame(0), lastInput(Input::None) {
     commandChecker_ = new CommandChecker(&inputBuffer_, &chargeManager_);
 }
 
-CommandInput::~CommandInput() {
+CommandManager::~CommandManager() {
     delete commandChecker_;
 }
 
-void CommandInput::Update(const char* keys, const char* preKeys) {
+void CommandManager::Update(const char* keys, const char* preKeys) {
     currentFrame++;
 
     // 入力を取得して currentInput を定義
@@ -57,7 +57,7 @@ void CommandInput::Update(const char* keys, const char* preKeys) {
 }
 
 // バッファクリア（再スタート時など）
-void CommandInput::ClearBuffer() {
+void CommandManager::ClearBuffer() {
     inputBuffer_.Clear();
     spinDetector_.Clear();
     chargeManager_.Clear();
@@ -65,7 +65,7 @@ void CommandInput::ClearBuffer() {
 }
 
 // 入力 → 文字列
-std::string CommandInput::InputToString(Input input) const {
+std::string CommandManager::InputToString(Input input) const {
     switch (input) {
     case Input::Up: return "8";
     case Input::UpRight: return "9";
@@ -88,10 +88,10 @@ std::string CommandInput::InputToString(Input input) const {
 }
 
 // 表示用履歴を文字列に変換
-std::string CommandInput::GetInputHistory() const {
+std::string CommandManager::GetInputHistory() const {
     return inputBuffer_.GetInputHistory();
 }
 
-bool CommandInput::CheckCommand(const Command& command) {
+bool CommandManager::CheckCommand(const Command& command) {
     return commandChecker_->CheckCommand(command);
 }

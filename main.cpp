@@ -1,12 +1,12 @@
 #include <Novice.h>
-#include "Command/CommandInput.h"
+#include "Command/CommandManager.h"
 #include "Command/CommandList.h"
 
 const char kWindowTitle[] = "LE2B_03_イトウカズイ_コマンド入力";
 const int kWindowWidth = 1280;
 const int kWindowHeight = 720;
 
-CommandInput commandInput;
+CommandManager commandManager;
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
@@ -35,67 +35,67 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		///
 
 		// 入力状態を更新
-		commandInput.Update(keys, preKeys);
+		commandManager.Update(keys, preKeys);
 
 		// バカ技コマンドの判定
-		if (commandInput.CheckCommand(BakaWaza)) {
+		if (commandManager.CheckCommand(BakaWaza)) {
 			ULT = 12;
-			commandInput.ClearBuffer(); // 入力バッファをクリア
+			commandManager.ClearBuffer(); // 入力バッファをクリア
 		}
 		// ボリショイストリームバスターコマンドの判定
-		if (commandInput.CheckCommand(BolshoiStormBuster)) {
+		if (commandManager.CheckCommand(BolshoiStormBuster)) {
 			ULT = 8;
-			commandInput.ClearBuffer(); // 入力バッファをクリア
+			commandManager.ClearBuffer(); // 入力バッファをクリア
 		}
 		// スクリューパイルドライバーコマンドの判定
-		if (commandInput.CheckCommand(ScrewPileDriver)) {
+		if (commandManager.CheckCommand(ScrewPileDriver)) {
 			ULT = 9;
-			commandInput.ClearBuffer(); // 入力バッファをクリア
+			commandManager.ClearBuffer(); // 入力バッファをクリア
 		}
 		// スピンドライブスマッシャーコマンドの判定
-		if (commandInput.CheckCommand(spinDriveSmasher)) {
+		if (commandManager.CheckCommand(spinDriveSmasher)) {
 			ULT = 4;
-			commandInput.ClearBuffer(); // 入力バッファをクリア
+			commandManager.ClearBuffer(); // 入力バッファをクリア
 		}
 		// 真空波動拳コマンドの判定
-		if (commandInput.CheckCommand(sinkuhadouken)) {
+		if (commandManager.CheckCommand(sinkuhadouken)) {
 			ULT = 5;
-			commandInput.ClearBuffer(); // 入力バッファをクリア
+			commandManager.ClearBuffer(); // 入力バッファをクリア
 		}
 		// サマーソルトコマンドの判定
-		if (commandInput.CheckCommand(Somersault)) {
+		if (commandManager.CheckCommand(Somersault)) {
 			ULT = 10;
-			commandInput.ClearBuffer(); // 入力バッファをクリア
+			commandManager.ClearBuffer(); // 入力バッファをクリア
 		}
 		// ソニックブームコマンドの判定
-		if (commandInput.CheckCommand(SonicBoom)) {
+		if (commandManager.CheckCommand(SonicBoom)) {
 			ULT = 11;
-			commandInput.ClearBuffer(); // 入力バッファをクリア
+			commandManager.ClearBuffer(); // 入力バッファをクリア
 		}
 		// 昇竜拳コマンドの判定
-		if (commandInput.CheckCommand(shoryuken)) {
+		if (commandManager.CheckCommand(shoryuken)) {
 			ULT = 1;
-			commandInput.ClearBuffer(); // 入力バッファをクリア
+			commandManager.ClearBuffer(); // 入力バッファをクリア
 		}
 		// 波動拳コマンドの判定
-		if (commandInput.CheckCommand(hadouken)) {
+		if (commandManager.CheckCommand(hadouken)) {
 			ULT = 2;
-			commandInput.ClearBuffer(); // 入力バッファをクリア
+			commandManager.ClearBuffer(); // 入力バッファをクリア
 		}
 		// 竜巻旋風脚コマンドの判定
-		if (commandInput.CheckCommand(tatumakisenpukyaku)) {
+		if (commandManager.CheckCommand(tatumakisenpukyaku)) {
 			ULT = 3;
-			commandInput.ClearBuffer(); // 入力バッファをクリア
+			commandManager.ClearBuffer(); // 入力バッファをクリア
 		}
 		// トリグラフコマンドの判定
-		if (commandInput.CheckCommand(torigurahu)) {
+		if (commandManager.CheckCommand(torigurahu)) {
 			ULT = 7;
-			commandInput.ClearBuffer(); // 入力バッファをクリア
+			commandManager.ClearBuffer(); // 入力バッファをクリア
 		}
 		// 投げコマンドの判定
-		if (commandInput.CheckCommand(nage)) {
+		if (commandManager.CheckCommand(nage)) {
 			ULT = 6;
-			commandInput.ClearBuffer(); // 入力バッファをクリア
+			commandManager.ClearBuffer(); // 入力バッファをクリア
 		}
 
 		///
@@ -158,7 +158,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		}
 
 		// キーディスを表示
-		std::string inputHistory = commandInput.GetInputHistory();
+		std::string inputHistory = commandManager.GetInputHistory();
 		Novice::ScreenPrintf(0, 20, "Input History: %s", inputHistory.c_str());
 
 		///
