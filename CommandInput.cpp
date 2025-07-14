@@ -6,9 +6,12 @@
 #include <optional>
 
 CommandInput::CommandInput()
-    : currentFrame(0),
-      lastInput(Input::None),
-      commandChecker_(inputBuffer_, chargeManager_) {
+    : currentFrame(0), lastInput(Input::None) {
+    commandChecker_ = new CommandChecker(&inputBuffer_, &chargeManager_);
+}
+
+CommandInput::~CommandInput() {
+    delete commandChecker_;
 }
 
 void CommandInput::Update(const char* keys, const char* preKeys) {
@@ -87,4 +90,8 @@ std::string CommandInput::InputToString(Input input) const {
 // 表示用履歴を文字列に変換
 std::string CommandInput::GetInputHistory() const {
     return inputBuffer_.GetInputHistory();
+}
+
+bool CommandInput::CheckCommand(const Command& command) {
+    return commandChecker_->CheckCommand(command);
 }

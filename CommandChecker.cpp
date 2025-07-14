@@ -1,24 +1,35 @@
 ﻿#include "CommandChecker.h"
 
-CommandChecker::CommandChecker(InputBuffer& inputBuffer, ChargeManager& chargeManager)
+CommandChecker::CommandChecker(const InputBuffer* inputBuffer, const ChargeManager* chargeManager)
     : inputBuffer_(inputBuffer), chargeManager_(chargeManager) {
 }
 
-bool CommandChecker::CheckCommand(const Command& command) {
-    // ① チャージ条件チェック
+bool CommandChecker::CheckCommand(const Command& command) const {
+    // ① チャージ条件を満たしているかを確認
     for (const auto& cond : command.chargeConditions) {
-        if (!chargeManager_.IsChargeValid(cond.input)) return false;
+        Direction dir;
+        switch (cond.input) {
+        case Input::ChargeDown: dir = Direction::Down; break;
+        case Input::ChargeUp: dir = Direction::Up; break;
+        case Input::ChargeLeft: dir = Direction::Left; break;
+        case Input::ChargeRight: dir = Direction::Right; break;
+        default: return false;
+        }
+
+        if (!chargeManager_->IsChargeValid(dir)) {
+            return false;
+        }
     }
 
-    // ② 入力シーケンスチェック
-    const auto& sequence = command.sequence;
+    // ② 入力シーケンスの照合（順番とフレーム間隔）
+    const std::vector<Input>& sequence = command.sequence;
     int maxFrameGap = command.maxFrameGap;
 
-    std::queue<std::pair<Input, int>> tempQueue = inputBuffer_.GetBufferCopy();
+    std::queue<std::pair<Input, int>> buffer = inputBuffer_->GetBufferCopy();
     std::vector<std::pair<Input, int>> inputs;
-    while (!tempQueue.empty()) {
-        inputs.push_back(tempQueue.front());
-        tempQueue.pop();
+    while (!buffer.empty()) {
+        inputs.push_back(buffer.front());
+        buffer.pop();
     }
 
     size_t seqIndex = 0;
@@ -36,5 +47,5 @@ bool CommandChecker::CheckCommand(const Command& command) {
         }
     }
 
-    return seqIndex == sequence.size();
+    return (seqIndex == sequence.size());
 }

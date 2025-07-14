@@ -7,7 +7,7 @@ class ChargeManager {
 public:
     void UpdateChargeState(float now, Input rawDirection);           // チャージ状態の更新
     Input GetEffectiveInput(Input input) const;                      // チャージ成立中なら置き換え
-    bool IsChargeValid(Input chargeInput) const;                     // 指定Inputのチャージが有効か
+    bool IsChargeValid(Direction chargeInput) const;                     // 指定Inputのチャージが有効か
     void Clear();                                                    // 初期化
 
 private:

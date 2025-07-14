@@ -118,6 +118,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClCompile Include="ChargeManager.cpp" />
     <ClCompile Include="CommandChecker.cpp" />
     <ClCompile Include="CommandInput.cpp" />
+    <ClCompile Include="CommandList.cpp" />
     <ClCompile Include="InputBuffer.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="main.cpp" />
@@ -151,6 +152,7 @@ xcopy C:\KamataEngine\DirectXGame\Resources "$(OutDirFullPath)NoviceResources" /
     <ClInclude Include="Command.h" />
     <ClInclude Include="CommandChecker.h" />
     <ClInclude Include="CommandInput.h" />
+    <ClInclude Include="CommandList.h" />
     <ClInclude Include="InputBuffer.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="SpinDetector.h" />

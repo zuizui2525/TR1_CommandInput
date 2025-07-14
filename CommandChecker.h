@@ -7,12 +7,13 @@
 
 class CommandChecker {
 public:
-    CommandChecker(InputBuffer& inputBuffer, ChargeManager& chargeManager);
+    // コンストラクタに必要な参照を受け取る
+    CommandChecker(const InputBuffer* inputBuffer, const ChargeManager* chargeManager);
 
-    // コマンド成立チェック
-    bool CheckCommand(const Command& command);
+    // 指定されたコマンドが成立しているかを判定
+    bool CheckCommand(const Command& command) const;
 
 private:
-    InputBuffer& inputBuffer_;
-    ChargeManager& chargeManager_;
+    const InputBuffer* inputBuffer_;
+    const ChargeManager* chargeManager_;
 };

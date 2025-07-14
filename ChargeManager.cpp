@@ -48,18 +48,12 @@ Input ChargeManager::GetEffectiveInput(Input input) const {
     return input;
 }
 
-bool ChargeManager::IsChargeValid(Input chargeInput) const {
-    Direction dir;
-    switch (chargeInput) {
-    case Input::ChargeDown: dir = Direction::Down; break;
-    case Input::ChargeUp: dir = Direction::Up; break;
-    case Input::ChargeLeft: dir = Direction::Left; break;
-    case Input::ChargeRight: dir = Direction::Right; break;
-    default: return false;
+bool ChargeManager::IsChargeValid(Direction dir) const {
+    auto it = chargeStates_.find(dir);
+    if (it != chargeStates_.end()) {
+        return it->second.isValid;
     }
-
-    const auto& state = chargeStates_.at(dir);
-    return state.isValid;
+    return false;
 }
 
 void ChargeManager::Clear() {

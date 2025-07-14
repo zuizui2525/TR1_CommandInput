@@ -1,65 +1,12 @@
 #include <Novice.h>
 #include "CommandInput.h"
+#include "CommandList.h"
 
 const char kWindowTitle[] = "LE2B_03_イトウカズイ_コマンド入力";
 const int kWindowWidth = 1280;
 const int kWindowHeight = 720;
 
-// コマンドの定義
-Command hadouken = {
-	{Input::Down, Input::DownRight, Input::Right, Input::Punch}, // ↓↘→＋P
-	7, // 猶予フレーム
-};
-Command shoryuken = {
-	{Input::Right, Input::Down, Input::DownRight, Input::Punch}, // →↓↘＋P
-	7, // 猶予フレーム
-};
-Command tatumakisenpukyaku = {
-	{Input::Down, Input::DownLeft, Input::Left, Input::Kick}, // ↓↙←＋K
-	7 // 猶予フレーム
-};
-Command spinDriveSmasher= {
-	{Input::Down, Input::DownRight, Input::Right, Input::Down, Input::DownRight, Input::Right, Input::Kick}, // ↓↘→↓↘→＋K
-	7 // 猶予フレーム
-};
-Command sinkuhadouken = {
-	{Input::Down, Input::DownRight, Input::Right, Input::Down, Input::DownRight, Input::Right, Input::Punch}, // ↓↘→↓↘→＋P
-	7 // 猶予フレーム
-};
-Command nage = {
-	{Input::Punch, Input::Kick}, // P+K
-	7 // 猶予フレーム
-};
-Command torigurahu = {
-	{Input::Down, Input::Down, Input::Punch}, // ↓↓+P
-	9 // 猶予フレーム
-};
-Command BolshoiStormBuster = {
-	{Input::Spin,Input::Spin,Input::Punch}, // OO+P
-	14 // 猶予フレーム
-};
-Command ScrewPileDriver = {
-	{Input::Spin,Input::Punch}, // O+P
-	7 // 猶予フレーム
-};
-Command Somersault = {
-	{Input::Up, Input::Kick}, // C↓↑+K
-	7, // 猶予フレーム
-	{{Input::ChargeDown }}
-};
-Command SonicBoom = {
-	{Input::Right, Input::Punch}, // C←→+P
-	7, // 猶予フレーム
-	{{Input::ChargeLeft }}
-};
-Command BakaWaza = {
-	{Input::Punch, Input::Down, Input::DownRight, Input::Right, Input::Down, Input::DownRight, Input::Right, Input::Punch},
-	7, // 猶予フレーム
-	{{Input::ChargeUp }}
-};
-
 CommandInput commandInput;
-CommandChecker commandChecker;
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
@@ -91,62 +38,62 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		commandInput.Update(keys, preKeys);
 
 		// バカ技コマンドの判定
-		if (commandChecker.CheckCommand(BakaWaza)) {
+		if (commandInput.CheckCommand(BakaWaza)) {
 			ULT = 12;
 			commandInput.ClearBuffer(); // 入力バッファをクリア
 		}
 		// ボリショイストリームバスターコマンドの判定
-		if (commandChecker.CheckCommand(BolshoiStormBuster)) {
+		if (commandInput.CheckCommand(BolshoiStormBuster)) {
 			ULT = 8;
 			commandInput.ClearBuffer(); // 入力バッファをクリア
 		}
 		// スクリューパイルドライバーコマンドの判定
-		if (commandChecker.CheckCommand(ScrewPileDriver)) {
+		if (commandInput.CheckCommand(ScrewPileDriver)) {
 			ULT = 9;
 			commandInput.ClearBuffer(); // 入力バッファをクリア
 		}
 		// スピンドライブスマッシャーコマンドの判定
-		if (commandChecker.CheckCommand(spinDriveSmasher)) {
+		if (commandInput.CheckCommand(spinDriveSmasher)) {
 			ULT = 4;
 			commandInput.ClearBuffer(); // 入力バッファをクリア
 		}
 		// 真空波動拳コマンドの判定
-		if (commandChecker.CheckCommand(sinkuhadouken)) {
+		if (commandInput.CheckCommand(sinkuhadouken)) {
 			ULT = 5;
 			commandInput.ClearBuffer(); // 入力バッファをクリア
 		}
 		// サマーソルトコマンドの判定
-		if (commandChecker.CheckCommand(Somersault)) {
+		if (commandInput.CheckCommand(Somersault)) {
 			ULT = 10;
 			commandInput.ClearBuffer(); // 入力バッファをクリア
 		}
 		// ソニックブームコマンドの判定
-		if (commandChecker.CheckCommand(SonicBoom)) {
+		if (commandInput.CheckCommand(SonicBoom)) {
 			ULT = 11;
 			commandInput.ClearBuffer(); // 入力バッファをクリア
 		}
 		// 昇竜拳コマンドの判定
-		if (commandChecker.CheckCommand(shoryuken)) {
+		if (commandInput.CheckCommand(shoryuken)) {
 			ULT = 1;
 			commandInput.ClearBuffer(); // 入力バッファをクリア
 		}
 		// 波動拳コマンドの判定
-		if (commandChecker.CheckCommand(hadouken)) {
+		if (commandInput.CheckCommand(hadouken)) {
 			ULT = 2;
 			commandInput.ClearBuffer(); // 入力バッファをクリア
 		}
 		// 竜巻旋風脚コマンドの判定
-		if (commandChecker.CheckCommand(tatumakisenpukyaku)) {
+		if (commandInput.CheckCommand(tatumakisenpukyaku)) {
 			ULT = 3;
 			commandInput.ClearBuffer(); // 入力バッファをクリア
 		}
 		// トリグラフコマンドの判定
-		if (commandChecker.CheckCommand(torigurahu)) {
+		if (commandInput.CheckCommand(torigurahu)) {
 			ULT = 7;
 			commandInput.ClearBuffer(); // 入力バッファをクリア
 		}
 		// 投げコマンドの判定
-		if (commandChecker.CheckCommand(nage)) {
+		if (commandInput.CheckCommand(nage)) {
 			ULT = 6;
 			commandInput.ClearBuffer(); // 入力バッファをクリア
 		}
